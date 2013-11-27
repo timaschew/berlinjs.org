@@ -1,0 +1,4 @@
+source: .
+target: _site
+timezone: Europe/Berlin
+encoding: UTF-8
