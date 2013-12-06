@@ -2,7 +2,8 @@
 layout: berlinjs
 title: Archive of Previous Talks
 ---
-{% for meetup in site.data.meetups %}
+{% assign meetups = site.data.meetups | sort: "time" %}
+{% for meetup in meetups reversed %}
   {% if meetup.time < site.time %}
     {% include meetup.html meetup=meetup prefix="Meetup on" %}
   {% endif %}
