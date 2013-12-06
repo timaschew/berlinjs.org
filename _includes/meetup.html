@@ -13,10 +13,9 @@
       </div>
       {% endfor %}
 
-      {% assign totalSlots = "1,2,3" | split: "," %}
-      {% assign takenSlots = include.meetup.talks | size %}
+      {% assign taken = include.meetup.talks | size %}
 
-      {% for slot in totalSlots | limit: 3 offset: takenSlots %}
+      {% for i in (taken..2) %}
         {% include empty.html %}
       {% endfor %}
 
