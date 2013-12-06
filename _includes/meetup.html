@@ -7,10 +7,17 @@
   <section class="clearfix">
     <div class="three-cols clearfix">
 
-      {% for talk in include.meetup.talks %}
+      {% for talk in include.meetup.talks | limit: 3 %}
       <div class="speaker">
         {{ talk | markdownify }}
       </div>
+      {% endfor %}
+
+      {% assign totalSlots = "1,2,3" | split: "," %}
+      {% assign takenSlots = include.meetup.talks | size %}
+
+      {% for slot in totalSlots | limit: 3 offset: takenSlots %}
+        {% include empty.html %}
       {% endfor %}
 
     </div>
