@@ -1,0 +1,77 @@
+# THIS IS HOW A TALK ABSTRACT LOOKS LIKE
+# - |
+#   ### Your topic
+#   ##### [Your Name](http://twitter.com/your_twitter_handle)
+#
+#   Description
+#
+#   Further description
+
+- time: 2013-11-21 19:00:00 +0100
+  talks:
+    - |
+      ### JavaScript as the future of Progressive Enhancement
+      ##### [Tiago Rodrigues](http://twitter.com/trodrigues)
+
+      In recent times the web development community has been divided over the way JavaScript is used on modern web
+      development and how Progressive Enhancement has been abandoned by so many developers. But what if JavaScript is
+      the future of Progressive Enhancement?
+
+      This talk will go through various solutions for doing modern web development while keeping JavaScript as a first class citizen and taking advantage of all the good things Progressive Enhancement has to offer.
+
+    - |
+      ### JavaScript Method Modification - Aspect Oriented Function Composition
+      ##### [Peter Seliger](https://twitter.com/petsel)
+
+      Within the last years only on GitHub the amount of JavaScript libraries that claim to support Aspect Oriented
+      Programming (AOP) has risen significantly. But there is a difference between wrapping functions in a basic way and
+      the complexity that has to be handled by aspect oriented approaches.
+
+      The goal of this talk is to distinguish both. Live Coding examples might point to what developers are really
+      looking for.
+
+    - |
+      ### Solving the callback hell through generators and promises
+      ##### Andreas Lubbe
+
+      JavaScript has the tendency to produce callback code that is constantly headed for the right edge of the screen
+      and makes error checking &amp; handling anything but fun. The async library doesn't help much with errors,
+      promises are slow and fibers unreliable. So what to do?
+
+      ES6 has introduced generators and newer libraries such as bluebird offer the flexibility of promises with the
+      speed of async. This talk will introduce these concepts and show live demos and benchmarks.
+
+- time: 2013-10-17 19:00:00 +0100
+  talks:
+    - |
+      ### All that JS
+      ##### [Frank Leue](http://twitter.com/franatique)
+
+      We have to admit: We got lazy with proper usage of JS. Frameworks, Boilerplates and such allure us with promises and
+      let us forget how to properly dose something that imposes stress to the browser.
+
+      This talk will show you techniques to slim your JS and ramp up your page speed.
+
+      [Slides](https://speakerdeck.com/franatique/all-that-js)
+
+    - |
+      ### JavaScript Code Reuse Patterns - Function Based Object/Type Composition
+      ##### [Peter Seliger](https://twitter.com/petsel)
+
+      JavaScript - a delegation language; Roles, functional Trait/Mixin modules in JS; examples.
+
+      *( ... functions as Advices if there is interest yet and/or still time left.)*
+
+      [Slides](http://petsel.github.io/javascript-code-reuse-patterns/) /
+      [Code](https://github.com/petsel/javascript-code-reuse-patterns)
+
+    - |
+      ### API.js
+      ##### [Patrick Heneise](http://twitter.com/patrickheneise)
+
+      In a world of mobile apps, single-page applications and flying web servers, JavaScript, Objective-C, Java and
+      whats-so-not consumers, solid APIs are getting more and more important. This talk is about how to create, test and
+      document an API in Node.js with Express, Mocha, Dox and iodocs.
+
+      [Slides](https://speakerdeck.com/patrickheneise/api-dot-js) /
+      [Code](https://github.com/PatrickHeneise/TheJunkAPI)

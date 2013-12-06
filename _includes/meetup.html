@@ -1,0 +1,18 @@
+<article class="clearfix">
+  <header class="clearfix center">
+    <h1>
+      {{ include.prefix }} {{ include.meetup.time | date: "%B %d, %Y" }}
+    </h1>
+  </header>
+  <section class="clearfix">
+    <div class="three-cols clearfix">
+
+      {% for talk in include.meetup.talks %}
+      <div class="speaker">
+        {{ talk | markdownify }}
+      </div>
+      {% endfor %}
+
+    </div>
+  </section>
+</article>

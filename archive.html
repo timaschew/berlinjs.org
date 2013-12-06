@@ -2,71 +2,8 @@
 layout: berlinjs
 title: Archive of Previous Talks
 ---
-<article class="clearfix">
-  <header class="clearfix center">
-    <h1>
-      Meetup October 17<sup>th</sup>, 2013
-    </h1>
-  </header>
-  <section class="clearfix">
-    <div class="three-cols clearfix">
-
-      <div class="speaker">
-        <h3>
-          All that JS
-        </h3>
-        <h5>
-          <a href="http://twitter.com/franatique">Frank Leue</a>
-        </h5>
-        <p>
-          We have to admit: We got lazy with proper usage of JS. Frameworks, Boilerplates and such allure
-          us with promises and let us forget how to properly dose something that imposes stress to the browser.
-        </p>
-        <p>
-            This talk will show you techniques to slim your JS and ramp up your page speed.
-        </p>
-        <p>
-          <a href="https://speakerdeck.com/franatique/all-that-js" title="Slides for All that JS">Slides</a>
-        </p>
-      </div>
-
-      <div class="speaker">
-        <h3>
-          JavaScript Code Reuse Patterns - Function Based Object/Type Composition
-        </h3>
-        <h5>
-          <a href="https://twitter.com/petsel">Peter Seliger</a>
-        </h5>
-        <p>
-          JavaScript - a delegation language; Roles, functional Trait/Mixin modules in JS; examples.
-        </p>
-        <p>
-          <em>( ... functions as Advices if there is interest yet and/or still time left.)</em>
-        </p>
-        <p>
-          <a href="http://petsel.github.io/javascript-code-reuse-patterns/" title="Slides">Slides</a> /
-          <a href="https://github.com/petsel/javascript-code-reuse-patterns" title="Code">Code</a>
-        </p>
-      </div>
-
-      <div class="speaker">
-        <h3>
-          API.js
-        </h3>
-        <h5>
-          <a href="http://twitter.com/patrickheneise">Patrick Heneise</a>
-        </h5>
-        <p>
-          In a world of mobile apps, single-page applications and flying web servers, JavaScript, Objective-C,
-          Java and whats-so-not consumers, solid APIs are getting more and more important. This talk is about how
-          to create, test and document an API in Node.js with Express, Mocha, Dox and iodocs.
-        </p>
-        <p>
-          <a href="https://speakerdeck.com/patrickheneise/api-dot-js" title="Slides">Slides</a> /
-          <a href="https://github.com/PatrickHeneise/TheJunkAPI" title="Code">Code</a>
-        </p>
-      </div>
-
-    </div>
-  </section>
-</article>
+{% for meetup in site.data.meetups %}
+  {% if meetup.time < site.time %}
+    {% include meetup.html meetup=meetup prefix="Meetup on" %}
+  {% endif %}
+{% endfor %}
