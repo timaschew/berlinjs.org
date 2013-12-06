@@ -2,8 +2,6 @@
 layout: berlinjs
 title: Berlin's finest JavaScript Usergroup
 ---
-{% for meetup in site.data.meetups %}
-  {% if meetup.time > site.time %}
-    {% include meetup.html meetup=meetup prefix="Next meetup on" %}
-  {% endif %}
+{% for meetup in site.data.meetups | limit: 1%}
+  {% include meetup.html meetup=meetup prefix="Next meetup on" %}
 {% endfor %}
