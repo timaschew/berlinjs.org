@@ -2,6 +2,8 @@
 layout: berlinjs
 title: Berlin's finest JavaScript Usergroup
 ---
-{% for meetup in site.data.meetups | limit: 1%}
+{% assign meetups = site.data.meetups | sort: "time" %}
+{% assign last = meetups | size | minus: 1 %}
+{% for meetup in meetups reversed | offset: last %}
   {% include meetup.html meetup=meetup prefix="Next meetup on" %}
 {% endfor %}
