@@ -32,6 +32,9 @@
       The goal of this talk is to distinguish both. Live Coding examples might point to what developers are really
       looking for.
 
+      [Slides](http://petsel.github.io/javascript-method-modification/talk/slides/#/cover) /
+      [Code](http://petsel.github.io/javascript-method-modification/)
+
     - |
       ### Solving the callback hell through generators and promises
       ##### Andreas Lubbe
