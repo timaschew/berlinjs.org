@@ -9,6 +9,15 @@
 
 - time: 2014-01-16 19:00:00 +0100
   talks:
+    - |
+      ### Player.js: Control Media Iframes
+      ##### [Sean Creeley](http://twitter.com/screeley)
+
+      [Player.js](https://github.com/embedly/player.js) is a library for programmatically running actions like play,
+      pause, mute, and seek for a wide variety of media providers.
+
+      This talk will focus on building the media iframe, using postMessage and the Player.js library itself. We will
+      also discuss some of the immediate possibilities like event listening for media analytics and playlist apps.
 
 - time: 2013-11-21 19:00:00 +0100
   talks:
