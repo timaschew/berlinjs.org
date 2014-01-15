@@ -19,6 +19,15 @@
       This talk will focus on building the media iframe, using postMessage and the Player.js library itself. We will
       also discuss some of the immediate possibilities like event listening for media analytics and playlist apps.
 
+    - |
+      ### Sqwiggle: How we JavaScript
+      ##### [Luke Roberts](https://twitter.com/lukeroberts1990)
+
+      Sqwiggle is an online office and collaboration space for remote teams. We are on the bleeding edge with WebRTC and
+      use a LOT of JS.
+
+      This talk is a brief overview of the Sqwiggle stack, WebRTC and our approach to using Javascript.
+
 - time: 2013-11-21 19:00:00 +0100
   talks:
     - |
