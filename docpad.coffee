@@ -34,3 +34,8 @@ module.exports =
 
     enabledPlugins:  
         basicauth: false
+
+    plugins:
+        ghpages:
+            deployRemote: 'origin'
+            deployBranch: 'gh-pages'
