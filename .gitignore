@@ -1,2 +1,5 @@
 .DS_Store
 .idea
+.docpad.db
+out/*
+node_modules/*
