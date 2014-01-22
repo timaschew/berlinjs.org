@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "docpad": "~6.60.2",
-    "docpad-plugin-coffeescript": "~2.2.3"
+    "docpad-plugin-coffeescript": "~2.2.3",
+    "github": "~0.1.12"
   }
 }

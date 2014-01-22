@@ -1,5 +1,6 @@
 .DS_Store
 .idea
 .docpad.db
+token.json
 out/*
 node_modules/*
