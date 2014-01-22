@@ -17,6 +17,8 @@ retVal = github.authenticate
     type: 'oauth'
     token: token
 
+# create and update files are not implemented in this github API lib
+# http://developer.github.com/v3/repos/contents/#create-a-file
 content = 'This file is edited via Github API'
 buffer = new Buffer(content).toString('base64')
 
