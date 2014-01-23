@@ -16,7 +16,8 @@
     "docpad-plugin-restapi": "~2.1.6",
     "docpad-plugin-inlinegui": "~2.0.3",
     "docpad-plugin-livereload": "~2.5.6",
-    "docpad-plugin-marked": "~2.2.0"
+    "docpad-plugin-marked": "~2.2.0",
+    "github": "git://github.com/timaschew/node-github.git"
   },
   "main": "node_modules/docpad/bin/docpad-server",
   "scripts": {
