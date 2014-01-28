@@ -31,6 +31,10 @@ module.exports =
         'layouts'
     ]
 
+    collections:
+        '2013-11-21': (database) ->
+            database.findAllLive({relativeOutPath: $startsWith: 'talks/2013-11'})
+
     # Template Data
     # Use to define your own template data and helpers that will be accessible to your templates
     # Complete listing of default values can be found here: http://docpad.org/docs/template-data

@@ -1,0 +1,10 @@
+---
+layout: default
+dateText: 'November 21th'
+---
+
+- var collection = getCollection('2013-11-21').toJSON()
+
+each talk in collection
+  .speaker 
+    != talk.contentRenderedWithoutLayouts

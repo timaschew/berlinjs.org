@@ -41,9 +41,8 @@ header.clearfix(role='banner')
 .content.clearfix(role='main')
   article.clearfix
     header.clearfix.center
-      h1
-        | Next meetup on January 16
-        sup th
+      h1 Next meetup on #{document.dateText || getDateForNextTalk().text}
+
     section.clearfix
       // TALKS
 
