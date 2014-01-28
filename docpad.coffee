@@ -60,10 +60,39 @@ module.exports =
                 """
 
         schedules: [
-            'January 16th'
-            'February 20th'
-            'March 1st'
+                date: '2013-11-21'
+                text: 'November 21th'
+            ,
+                date: '2013-12-19'
+                text: 'December 19th'
+            ,
+                date: '2014-01-16'
+                text: 'January 16th'
+            ,
+                date: '2014-02-20'
+                text: 'February 20th'
+            ,
+                date: '2014-03-20'
+                text: 'March 1st'
         ]
+        
+
+        getTalksForNextMetup: ->
+            nextTalkDate = @getDateForNextTalk()
+            opts = 
+                relativeOutPath: $startsWith: "talks/#{nextTalkDate.date}"
+            console.log opts
+            @getDatabase().findAllLive(opts).toJSON()
+
+        getDateForNextTalk: ->
+            now = new Date().getTime()
+            for item in @schedules
+              talkDate = new Date(item.date).getTime();
+              # add some (timezone) buffer 
+              talkDate -= 1000*60*60*24 # 24 hours
+              if talkDate >= now
+                console.log "return item: #{JSON.stringify(item)}"
+                return item
 
     enabledPlugins:  
         basicauth: false

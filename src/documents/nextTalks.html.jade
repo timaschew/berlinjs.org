@@ -1,0 +1,9 @@
+---
+layout: default
+---
+
+- var collection = getTalksForNextMetup()
+
+each talk in collection
+  .speaker 
+    != talk.contentRenderedWithoutLayouts
