@@ -5,7 +5,7 @@
 - [x] provide preview
 - [x] provide pull request functionality
 - [x] provide automatically page generation for future talks
-- 
+
 ## Dev Setup
 
 Install docpad globally or run via `node_modules/.bin/docpad`
