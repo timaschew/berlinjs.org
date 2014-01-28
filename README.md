@@ -1,10 +1,11 @@
 # BerlinJS - Docpad version
 - [x] static site generation with docpad
 - [x] deploying into gh-pages branch
-- [] provide editable fields 
-- [] provide preview
-- [] provide pull request functionality
-
+- [x] provide editable fields 
+- [x] provide preview
+- [x] provide pull request functionality
+- [x] provide automatically page generation for future talks
+- 
 ## Dev Setup
 
 Install docpad globally or run via `node_modules/.bin/docpad`
