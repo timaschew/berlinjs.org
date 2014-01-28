@@ -128,7 +128,7 @@ h6 {
 }
 
 h1 {
-  margin-bottom : .75em;
+  margin-bottom : .25em;
   font-size : 3em;
   line-height : 1.2;
 }
@@ -354,6 +354,14 @@ caption {
 background-color : transparent; }
 
 /* 7.FORMS (See css/mylibs/forms.css) */
+
+.speaker.input [contenteditable]:hover:not(:focus) {
+  outline: 1px solid #ccc;
+}
+
+.speaker.input .description {
+  white-space: pre;
+}
 
 /* 8.BANNER */
 
