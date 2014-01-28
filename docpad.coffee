@@ -39,3 +39,72 @@ module.exports =
         ghpages:
             deployRemote: 'origin'
             deployBranch: 'gh-pages'
+
+
+    # =================================
+    # DocPad Events
+
+    # Here we can define handlers for events that DocPad fires
+    # You can find a full listing of events on the DocPad Wiki
+    events:
+
+        # Server Extend
+        # Used to add our own custom routes to the server before the docpad routes are added
+        serverExtend: (opts) ->
+            # Extract the server from the options
+            {express, server} = opts
+            docpad = @docpad
+
+            express.get '/test', (req, res) ->
+                res.end 'hello world'
+
+            try
+                github = require './out/github'
+                # Redirect any requests accessing one of our sites oldUrls to the new site url
+
+                express.get '/check/:token', (req, res) ->
+                    token = req.param 'token'
+                    console.log typeof token
+                    console.log "extract token: '#{token}' from url"
+
+                    db = require './db.json'
+                    result = db[token]
+                    console.log result
+                    res.json result
+                    res.end()
+
+                express.get '/confirm/:token', (req, res) ->
+                    token = req.param 'token'
+                    console.log "extract token: #{token} from url"
+
+                    db = require './db.json'
+                    result = db[token]
+                    unless result?
+                        return res.send "token not found: #{token}"
+                        
+                    token = result
+
+                    github.sendPullRequest token, (err, pullRequestResult) ->
+                        if err?
+                            res.send err.message
+                        else
+                            url = pullRequestResult.html_url
+                            res.send """<p>pull request created</p>
+                                <p><a href='#{url}'>see pull request</a></p>
+                                """
+
+                        res.end()
+
+                express.post '/submit', (req, res) ->
+                    console.log req.body.s
+                    {email, date, title, name, nameLink, description} = req.body.s
+                    github.submitAndSendMail email, date, title, name, nameLink, description, (err) ->
+                        if err?
+                            res.send err.message
+                        else
+                            res.send 'Check your mails!'
+                        res.end()
+                
+            catch err
+                console.error err.message
+            
