@@ -7,6 +7,27 @@
 #
 #   Further description
 
+- time: 2014-02-20 19:00:00 +0100
+  talks:
+    - |
+      ### Player.js: Control Media Iframes
+      ##### [Sean Creeley](http://twitter.com/screeley)
+
+      [Player.js](https://github.com/embedly/player.js) is a library for programmatically running actions like play,
+      pause, mute, and seek for a wide variety of media providers.
+
+      This talk will focus on building the media iframe, using postMessage and the Player.js library itself. We will
+      also discuss some of the immediate possibilities like event listening for media analytics and playlist apps.
+
+      ### Basics of Canvas Game Development
+      ##### [Oliver Zeigermann](http://twitter.com/DJCordhose)
+
+      In this live coding sessions I will introduce you to the basics of JavaScript and Canvas game development.
+      We will do something like this little game ([http://zeigermann.eu/balls/](http://zeigermann.eu/balls/)) more or
+      less from scratch.
+
+      Topics will include canvas basics, game loop, player control, physics, and game logic.
+
 - time: 2014-01-16 19:00:00 +0100
   talks:
     - |
