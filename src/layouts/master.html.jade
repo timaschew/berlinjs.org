@@ -1,0 +1,30 @@
+!!! 5
+
+include head.html.jade
+
+block header
+  header.clearfix(role='banner')
+    .clearfix
+      a(href='/', title='BERLIN.JS')
+        h1.logo
+      h3.ug-info.triangle-border.left!= site.headerDescription
+
+.content.clearfix(role='main')
+  article.clearfix
+
+    block article
+
+      block meetupDate
+        header.clearfix.center
+          block nextMeetup
+            h1 Next meetup on #{document.dateText || getDateForNextTalk().text}
+
+      section.clearfix
+                    
+        .three-cols.clearfix
+          != content
+
+include footer.html.jade
+
+block scriptsBody
+  != getBlock("scripts").toHTML()
