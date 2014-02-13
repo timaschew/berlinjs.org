@@ -1,7 +1,7 @@
 .DS_Store
 .idea
 .docpad.db
-src/static/credentials.json
+credentials.json
 db.json
 out/*
 node_modules/*
