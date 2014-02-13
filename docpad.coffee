@@ -1,3 +1,7 @@
+github = require './github'
+websiteURL = require('./credentials').production.website
+submitURL = require('./credentials').docpadAppUrl + '/submit.html'
+
 module.exports = 
 
     # Out Path
@@ -35,29 +39,25 @@ module.exports =
         '2013-11-21': (database) ->
             database.findAllLive({relativeOutPath: $startsWith: 'talks/2013-11'})
 
+        'nextMeetup': (database) ->
+            cfg = docpad.getConfig()
+            nextTalkDate = cfg.templateData.getDateForNextTalk()
+            opts = relativeOutPath: $startsWith: "talks/#{nextTalkDate.date}"
+            @getDatabase().findAllLive(opts)
+
     # Template Data
     # Use to define your own template data and helpers that will be accessible to your templates
     # Complete listing of default values can be found here: http://docpad.org/docs/template-data
     templateData:  # example
 
-        # Specify some site properties
-        site:
-
-            # The production url of our website
-            url: "http://timaschew.github.io/berlinjs.org" 
-
-            # The default title of our website
-            title: "Berlin.JS"
-
-            # The website description (for SEO)
-            description: """
-                When your website appears in search results in say Google, the text here will be shown underneath your website's title.
-                """
-
-            # The website keywords (for SEO) separated by commas
-            keywords: """
-                place, your, website, keywoards, here, keep, them, related, to, the, content, of, your, website
-                """
+        getDateForNextTalk: ->
+            now = new Date().getTime()
+            for item in @schedules
+              talkDate = new Date(item.date).getTime();
+              # add one day buffer
+              talkDate -= 1000*60*60*24 # 24 hours
+              if talkDate >= now
+                return item
 
         schedules: [
                 date: '2013-11-21'
@@ -75,26 +75,42 @@ module.exports =
                 date: '2014-03-20'
                 text: 'March 1st'
         ]
-        
 
-        getTalksForNextMetup: ->
-            nextTalkDate = @getDateForNextTalk()
-            opts = 
-                relativeOutPath: $startsWith: "talks/#{nextTalkDate.date}"
-            console.log opts
-            @getDatabase().findAllLive(opts).toJSON()
+        # Specify some site properties
+        site:
+            # available slots
+            slots: 3
 
-        getDateForNextTalk: ->
-            now = new Date().getTime()
-            for item in @schedules
-              talkDate = new Date(item.date).getTime();
-              # add some (timezone) buffer 
-              talkDate -= 1000*60*60*24 # 24 hours
-              if talkDate >= now
-                console.log "return item: #{JSON.stringify(item)}"
-                return item
+            # url to the submit page with the XHR to this app
+            submitUrl: submitURL
 
-    enabledPlugins:  
+            # The production url of our website
+            url: websiteURL
+
+            # The default title of our website
+            title: "BerlinJS — Berlin's finest JavaScript Usergroup"
+
+            # The website description (for SEO)
+            description: """
+                Berlin.JS is a usergroup focused on JavaScript and related topics. 
+                We meet regularly on the 3rd Thursday each month at 7p.m. 
+                at co.up Offices, Adalbertstraße 7-8 in Berlin-Kreuzberg.
+                """
+
+            # The website keywords (for SEO) separated by commas
+            keywords: """
+                JavaScript, Usergroup, Berlin, Programming, JS
+                """
+
+            headerDescription: """
+                Berlin.JS is a usergroup focused on JavaScript and related topics. 
+                We meet regularly on the 3rd Thursday each month at 7p.m. at 
+                <a href='http://co-up.de' title='co.up Coworking'>co.up Offices</a>, 
+                Adalbertstraße 7-8 in Berlin-Kreuzberg.
+                """
+
+
+    enabledPlugins:
         basicauth: false
 
     plugins:
@@ -117,56 +133,33 @@ module.exports =
             {express, server} = opts
             docpad = @docpad
 
-            express.get '/test', (req, res) ->
-                res.end 'hello world'
+            express.get '/check/:token', (req, res) ->
+                token = req.param 'token'
 
-            try
-                github = require './out/github'
-                # Redirect any requests accessing one of our sites oldUrls to the new site url
+                result = github.getDatabase()[token]
+                console.log result
+                res.json result
+                res.end()
 
-                express.get '/check/:token', (req, res) ->
-                    token = req.param 'token'
-                    console.log typeof token
-                    console.log "extract token: '#{token}' from url"
+            express.get '/confirm/:token', (req, res) ->
+                token = req.param 'token'
 
-                    db = require './db.json'
-                    result = db[token]
-                    console.log result
-                    res.json result
+                github.sendPullRequest token, (err, pullRequestResult) ->
+                    console.log 'return from sendPullRequest cb'
+                    if err?
+                        res.send err.message
+                    else
+                        url = pullRequestResult.html_url
+                        res.send """<p>pull request created</p>
+                            <p><a href='#{url}'>see your pull request here</a></p>
+                            """
                     res.end()
 
-                express.get '/confirm/:token', (req, res) ->
-                    token = req.param 'token'
-                    console.log "extract token: #{token} from url"
-
-                    db = require './db.json'
-                    result = db[token]
-                    unless result?
-                        return res.send "token not found: #{token}"
-                        
-                    token = result
-
-                    github.sendPullRequest token, (err, pullRequestResult) ->
-                        if err?
-                            res.send err.message
-                        else
-                            url = pullRequestResult.html_url
-                            res.send """<p>pull request created</p>
-                                <p><a href='#{url}'>see pull request</a></p>
-                                """
-
-                        res.end()
-
-                express.post '/submit', (req, res) ->
-                    console.log req.body.s
-                    {email, date, title, name, nameLink, description} = req.body.s
-                    github.submitAndSendMail email, date, title, name, nameLink, description, (err) ->
-                        if err?
-                            res.send err.message
-                        else
-                            res.send 'Check your mails!'
-                        res.end()
-                
-            catch err
-                console.error err.message
-            
+            express.post '/submit', (req, res) ->
+                {email, date, title, name, nameLink, description} = req.body.s
+                github.submitAndSendMail email, date, title, name, nameLink, description, (err) ->
+                    if err?
+                        res.send 500, err.message
+                    else
+                        res.send 201, 'Check your mails!'
+                    res.end()
