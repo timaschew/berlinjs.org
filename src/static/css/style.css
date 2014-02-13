@@ -363,6 +363,10 @@ background-color : transparent; }
   white-space: pre;
 }
 
+input.email {
+  font-size: 100%;
+}
+
 /* 8.BANNER */
 
 h1 span {
@@ -562,6 +566,13 @@ nav li a.active {
   border: 5px solid #fff;
   background: #e1e1e1;
   box-shadow: 1px 1px 10px #ababab;
+}
+.speaker .edit {
+  display: none;
+  float: right;
+}
+.speaker:hover .edit {
+  display: block;
 }
 
 .empty {

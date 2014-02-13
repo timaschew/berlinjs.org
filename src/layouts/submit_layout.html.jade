@@ -1,0 +1,98 @@
+extends master.html.jade
+
+append scriptsHead
+  script(src="markdown.min.js")
+  script(src="jQuery-v2.1.0.min.js")
+
+//- block meetupDate
+//-   header.clearfix.center
+//-     .scheduleSelect.up
+//-       a.smallbutton(href="#") ⬆︎
+//-     h1 Submit your talk for #{document.dateText || getDateForNextTalk().text}
+//-     .scheduleSelect.down
+//-       a.smallbutton(href="#") ⬇︎
+
+block nextMeetup
+  h1 Submit your talk for #{document.dateText || getDateForNextTalk().text}
+
+append article
+  hr
+  .center
+    p Email:
+      input.email(type="email", name="email", size="30")
+    
+    a.button.submit-talk(href="#") Submit
+    span.spinner.hidden
+
+
+append scriptsBody
+  script.
+    var currentMeetup = function() {
+      var now = new Date().getTime();
+      schedules.forEach(function(date) {
+        dateTime = new Date(date).getTime();
+        // add some buffer
+        dateTime += 1000*60*60*24;
+        
+      });
+    }
+
+    var elements = ['.title', '.name', '.nameLink'];
+    elements.forEach(function(selectorPostfix) {
+      document.querySelector(".speaker.input "+selectorPostfix).addEventListener("keyup", function() {
+        if (selectorPostfix === '.nameLink') {
+          document.querySelector(".speaker.output "+selectorPostfix).href = this.innerText;
+        } 
+        else if (selectorPostfix === '.name') {
+          document.querySelector(".speaker.output .nameLink").innerText = this.innerText
+        } else {
+          document.querySelector(".speaker.output "+selectorPostfix).innerText = this.innerText;
+        }
+      });
+    });
+
+    var compile = function () {
+      var outElement = document.querySelector(".speaker.output .description");
+      var output = markdown.toHTML(this.innerText);
+      outElement.innerHTML = output;
+    }
+    
+    var markdownInput = document.querySelector(".speaker.input .description");
+    markdownInput.addEventListener("keyup", compile);
+
+    compile.call(markdownInput); // initial compilation
+    
+    $(document).ready(function() {
+
+      $(".submit-talk").click(function(event) {
+        // Stop form from submitting normally
+        event.preventDefault();
+        $("span.spinner").removeClass("hidden")
+       
+        // Get some values from elements on the page:
+        var data = {
+            email: $('input.email').val().trim(), 
+            date: '2014-02-20', 
+            title: $('.speaker.input .title').text().trim(), 
+            name: $('.speaker.input .name').text().trim(), 
+            nameLink: $('.speaker.input .nameLink').text().trim(), 
+            description: $('.speaker.input .description').text().trim()
+          }
+          var url = '/submit';
+       
+        // Send the data using post
+        var posting = $.post( url, { s: data } );
+       
+        // Put the results in a div
+        posting.done(function(data) {
+          $("span.spinner").addClass("hidden")
+          alert("Thanks for your submit!\n" + data);
+        });
+        posting.fail(function(data) {
+          $("span.spinner").addClass("hidden")
+          console.log(data);
+          alert("Sorry, that didn't work")
+        });
+        
+      });
+    });

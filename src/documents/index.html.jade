@@ -1,10 +1,35 @@
 ---
-layout: default
-dateText: 'November 21th'
+layout: master
 ---
 
-- var collection = getCollection('2013-11-21').toJSON()
+mixin fillEmptySlots(times)
+    if times > 0
+        .speaker.empty
+            h3 Free slot
+            h5 
+                | This slot could be yours!
+                | Submit your talk now.
+            p
+                | You did some crazy stuff with JavaScript? You want to show it to the community?
+
+            p
+                | Drop us a line on your topic on 
+                a(href="http://twitter.com/berlinjs" title="BerlinJS on Twitter") Twitter 
+                | or our 
+                a(href="http://groups.google.com/group/js-berlin" title="BerlinJS Mailinglist") Mailinglist 
+                | or use the 
+                a(href=site.submitUrl, title='Submit your own talk') submit form
+                | .
+
+           - times--
+        +fillEmptySlots(times)
+
+- var slots = site.slots
+- var collection = getCollection('nextMeetup').toJSON()
 
 each talk in collection
-  .speaker 
-    != talk.contentRenderedWithoutLayouts
+    - slots--
+    .speaker 
+        != talk.contentRenderedWithoutLayouts
+
++fillEmptySlots(slots)
