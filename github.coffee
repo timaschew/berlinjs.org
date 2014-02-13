@@ -3,22 +3,26 @@ uuid = require 'uuid'
 nodemailer = require 'nodemailer'
 
 GitHubApi = require 'github'
-Store = require 'jfs'
 
+fs = require 'fs'
 {inspect} = require 'util'
-{githubToken} = require './credentials'
 {mail} = require './credentials'
 
-db = new Store './db.json', {pretty:true}
+dbName = './db.json'
 
-host = 'localhost:9778'
+docpadURL = require('./credentials').docpadAppUrl
 
-botUser = 'berlinjs-bot'
-botRepo = 'berlinjs.org'
+mergePath = 'src/documents/talks/'
 
-berlinJsUser = 'timaschew'
-berlinJsRepo = 'berlinjs.org'
-pullRequestBase = 'master'
+# github account for the email fallback
+botUser = require('./credentials').emailFallback.user
+botRepo = require('./credentials').emailFallback.repo
+botToken = require('./credentials').emailFallback.token
+
+# github account for the remote origin (berlinjs in production)
+berlinJsUser = require('./credentials').production.user
+berlinJsRepo = require('./credentials').production.repo
+pullRequestBase = require('./credentials').production.pullRequestBase
 
 github = new GitHubApi(
   # required
@@ -39,11 +43,17 @@ smtpTransport = nodemailer.createTransport("SMTP",
     pass: mail.pass
 )
 
+getDatabase = -> 
+    JSON.parse fs.readFileSync dbName, 'utf8'
+
+saveDatabase = (dbToSave) ->
+    serialized = JSON.stringify dbToSave, null, '  '
+    fs.writeFileSync dbName, serialized, 'utf8'
+
 auth = ->
-    console.log 'auth ...'
     github.authenticate
         type: 'oauth'
-        token: githubToken
+        token: botToken
 
 submitTalk = (email, date, title, name, nameLink, description, cb) ->
     entry = 
@@ -55,17 +65,33 @@ submitTalk = (email, date, title, name, nameLink, description, cb) ->
 
     console.log 'saving into db ...'
     console.log entry
-    token = save(entry)
-    sendMail(email, token, cb)
+    try
+        token = save entry # catch here
+        sendMail email, token, cb
+    catch error
+        console.log 'error while save and send mail'
+        console.log err
+        cb error
 
 save = (object) ->
-    uuid = uuid.v4()
-    db.saveSync(uuid, object)
-    return uuid
+
+    # read db
+    db = getDatabase()
+
+    id = uuid.v4()
+    db[id] = object
+    saveDatabase(db)
+    
+    # check if write was successfull
+    db = getDatabase()
+    unless db[id]?
+        throw new Error "#{id} could not saved into db: #{dbName}"
+
+    return id
 
 sendMail = (email, token, cb) ->
     # send mail with token as link
-    link = "http://#{host}/confirm/#{token}"
+    link = "#{docpadURL}/confirm/#{token}"
     mailOptions =
         from: mail.sender
         to: email 
@@ -80,8 +106,8 @@ sendMail = (email, token, cb) ->
             console.error err.message
             return cb err
         else
-            console.log "Message sent: #{response.message}"
-            #console.log response
+            console.log 'Message sent: '
+            console.log response
             cb()
 
 
@@ -94,15 +120,11 @@ workflow = (token, cb) ->
     async.waterfall [
         (cb) ->
             # check token
-            if typeof token is 'string'
-                console.log 'check token ...'
-                db = require './db.json'
-                console.log 'db loaded'
-                result = db[token]
-                cb null, result
+            console.log "check token: #{token}"
 
-            else if typeof token is 'object'
-                cb null, token
+            db = getDatabase()
+            result = db[token]
+            cb null, result
 
         (dbEntry, cb) ->
             unless dbEntry?
@@ -156,7 +178,8 @@ workflow = (token, cb) ->
             , cb
 
         (cb) ->
-            # get latest commit sha for new branch
+            # TODO: can a branch have a newer sha than initial own fork?
+            # get latest commit and extract latest sha (from original repo) for new branch
             getCommits botUser, botRepo, cb
 
         (commits, cb) ->
@@ -165,7 +188,7 @@ workflow = (token, cb) ->
 
             # create branch
             # create unique branch name
-            branchName = "#{entry.date}-#{entry.title}"
+            branchName = "#{entry.date}_#{entry.title}"
             # replace special characters:
             branchName = branchName.replace(/[^\w]/gi, '-')
 
@@ -174,16 +197,22 @@ workflow = (token, cb) ->
                 if res?.meta?.status is '201 Created' or err.code is 422
                     return cb null, branchName
 
+                console.log 'unexpected error'
                 return cb err
 
         (branchName, cb) ->
             console.log 'create file ...'
             # create fie
-            path = "#{branchName}.md"
+            path = "#{mergePath}#{branchName}.html.md"
             commitMessage = branchName
             content = docpadMarkDownDocument
 
             createFile path, branchName, commitMessage, content, (err, res) ->
+                if err?.code is 422
+                    message = "ERROR: the file already exist: #{path}, use update!"
+                    console.log message
+                    return cb new Error message
+
                 cb err, res, branchName
 
         (res, branchName, cb) ->
@@ -199,7 +228,24 @@ workflow = (token, cb) ->
 
             createPullRequest title, body, branchName, cb
 
-    ], cb
+    ], (err, pullrequest) ->
+        if err?
+            if entry?
+                try
+                    console.log "save errror to db"
+                    db = getDatabase()
+                    db[token].error = err.message
+                    saveDatabase(db)
+                catch error
+                    console.log error
+
+            return cb(err)
+
+        console.log 'delete token from db'
+        db = getDatabase()
+        delete db[token]
+        saveDatabase(db)
+        cb(null, pullrequest)
 
 createFork = (cb) ->
     # POST /repos/:owner/:repo/forks
@@ -284,7 +330,13 @@ if require.main is module
     params = process.argv.slice 2
 
     if params[0] is 'send-mail'
-        console.log 'sending mail ...'
+        console.log "send mail to #{params[1]} with token: #{params[2]}"
+        sendMail params[1], params[2], (err) ->
+            if err?
+                process.exit 1
+
+    else if params[0] is 'submit-talk'
+        console.log 'submit-talk ...'
         submitTalk('timaschew@gmail.com', '2014-01-02', 'Talk title', 'Anton', 'https://twitter.com/timaschew', 'foobar')
 
     else if params[0] is 'fork-branch'
@@ -308,3 +360,4 @@ else
     module.exports = 
         submitAndSendMail: submitTalk
         sendPullRequest: workflow
+        getDatabase: getDatabase
