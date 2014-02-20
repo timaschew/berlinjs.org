@@ -264,6 +264,10 @@ nav li a.active {
   margin-right: 0;
 }
 
+.three-cols {
+  display: flex;
+}
+
 /* --- Speakers --- */
 
 /* --- END Speakers --- */

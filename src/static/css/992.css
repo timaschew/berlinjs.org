@@ -120,6 +120,10 @@ _____________________________________________________
   text-decoration: none;
 }
 
+.three-cols {
+  display: flex;
+}
+
 /* --- END Speakers --- */
 
 

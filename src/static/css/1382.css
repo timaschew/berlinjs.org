@@ -107,6 +107,10 @@ body {
 
 /* --- END Teaser Styles --- */
 
+.three-cols {
+  display: flex;
+}
+
 /* 11.MAIN */
 /* 12.COMPLIMENTARY */
 /* 13.CONTENTINFO */
