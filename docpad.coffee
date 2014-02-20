@@ -68,6 +68,9 @@ module.exports =
             ,
                 date: '2014-03-20'
                 text: 'March 20th'
+            ,
+                date: '2014-04-15'
+                text: 'April 20th'
         ]
 
         # Specify some site properties
