@@ -55,17 +55,11 @@ module.exports =
             for item in @schedules
               talkDate = new Date(item.date).getTime();
               # add one day buffer
-              talkDate -= 1000*60*60*24 # 24 hours
+              talkDate += 1000*60*60*24 # 24 hours
               if talkDate >= now
                 return item
 
         schedules: [
-                date: '2013-11-21'
-                text: 'November 21th'
-            ,
-                date: '2013-12-19'
-                text: 'December 19th'
-            ,
                 date: '2014-01-16'
                 text: 'January 16th'
             ,
@@ -73,13 +67,13 @@ module.exports =
                 text: 'February 20th'
             ,
                 date: '2014-03-20'
-                text: 'March 1st'
+                text: 'March 20th'
         ]
 
         # Specify some site properties
         site:
             # available slots
-            slots: 3
+            slots: 4
 
             # url to the submit page with the XHR to this app
             submitUrl: submitURL
