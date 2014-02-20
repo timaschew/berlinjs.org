@@ -43,7 +43,7 @@ module.exports =
         'nextMeetup': (database) ->
             cfg = docpad.getConfig()
             nextTalkDate = cfg.templateData.getDateForNextTalk()
-            opts = relativeOutPath: $startsWith: "talks/#{nextTalkDate.date}"
+            opts = relativeOutPath: $startsWith: "talks/#{nextTalkDate}"
             @getDatabase().findAllLive(opts)
 
     # Template Data
@@ -54,17 +54,17 @@ module.exports =
         getDateForNextTalk: ->
             now = new Date().getTime()
             for item in @schedules
-              talkDate = new Date(item.date).getTime();
+              talkDate = new Date(item).getTime();
               # add one day buffer
               talkDate += 1000*60*60*24 # 24 hours
               if talkDate >= now
                 return item
 
         schedules: [
-            date: '2014-01-16'
-            date: '2014-02-20'
-            date: '2014-03-20'
-            date: '2014-04-15'
+            '2014-01-16'
+            '2014-02-20'
+            '2014-03-20'
+            '2014-04-15'
         ]
 
         formatDate: (date) ->
