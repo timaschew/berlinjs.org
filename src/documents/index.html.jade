@@ -27,9 +27,23 @@ mixin fillEmptySlots(times)
 - var slots = site.slots
 - var collection = getCollection('nextMeetup').toJSON()
 
-each talk in collection
+
+each talk, i in collection
     - slots--
-    .speaker 
-        != talk.contentRenderedWithoutLayouts
+    - var column = (i % 3)
+    if column === 0
+        |<div class="section clearfix">
+        |   <div class="three-cols clearfix">
+        |       <div class="speaker">!{talk.contentRenderedWithoutLayouts}
+        |       </div>
+    else if column === 2
+        |       <div class="speaker"> !{talk.contentRenderedWithoutLayouts}
+        |       </div>
+        |   </div>
+        |</div>
+    else
+        |       <div class="speaker"> !{talk.contentRenderedWithoutLayouts}
+        |       </div>
+
 
 +fillEmptySlots(slots)

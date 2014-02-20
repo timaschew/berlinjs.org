@@ -19,10 +19,7 @@ block header
           block nextMeetup
             h1 Next meetup on #{document.dateText || getDateForNextTalk().text}
 
-      section.clearfix
-                    
-        .three-cols.clearfix
-          != content
+      != content
 
 include footer.html.jade
 
