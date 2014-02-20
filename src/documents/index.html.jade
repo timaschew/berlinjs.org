@@ -28,22 +28,10 @@ mixin fillEmptySlots(times)
 - var collection = getCollection('nextMeetup').toJSON()
 
 
-each talk, i in collection
+each talk in collection
     - slots--
-    - var column = (i % 3)
-    if column === 0
-        |<div class="section clearfix">
-        |   <div class="three-cols clearfix">
-        |       <div class="speaker">!{talk.contentRenderedWithoutLayouts}
-        |       </div>
-    else if column === 2
-        |       <div class="speaker"> !{talk.contentRenderedWithoutLayouts}
-        |       </div>
-        |   </div>
-        |</div>
-    else
-        |       <div class="speaker"> !{talk.contentRenderedWithoutLayouts}
-        |       </div>
+    .speaker 
+        != talk.contentRenderedWithoutLayouts
 
 
 +fillEmptySlots(slots)
