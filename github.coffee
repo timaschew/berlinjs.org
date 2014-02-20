@@ -132,9 +132,9 @@ workflow = (token, cb) ->
             entry = dbEntry
 
             docpadMarkDownDocument = """
-            # #{entry.title}
+            ## #{entry.title}
 
-            ## [#{entry.name}](#{entry.nameLink})
+            ##### [#{entry.name}](#{entry.nameLink})
 
             #{entry.description}
             """
