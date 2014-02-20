@@ -17,7 +17,7 @@ block header
       block meetupDate
         header.clearfix.center
           block nextMeetup
-            h1 Next meetup on #{document.dateText || getDateForNextTalk().text}
+            h1 Next meetup on #{document.dateText || formatDate(getDateForNextTalk())}<sup>th</sup>
 
       != content
 

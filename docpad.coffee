@@ -1,6 +1,7 @@
 github = require './github'
 websiteURL = require('./credentials').production.website
 submitURL = require('./credentials').docpadAppUrl + '/submit.html'
+moment = require 'moment'
 
 module.exports = 
 
@@ -60,18 +61,14 @@ module.exports =
                 return item
 
         schedules: [
-                date: '2014-01-16'
-                text: 'January 16th'
-            ,
-                date: '2014-02-20'
-                text: 'February 20th'
-            ,
-                date: '2014-03-20'
-                text: 'March 20th'
-            ,
-                date: '2014-04-15'
-                text: 'April 20th'
+            date: '2014-01-16'
+            date: '2014-02-20'
+            date: '2014-03-20'
+            date: '2014-04-15'
         ]
+
+        formatDate: (date) ->
+            moment(date).format('MMMM D')
 
         # Specify some site properties
         site:

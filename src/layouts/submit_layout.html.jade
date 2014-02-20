@@ -13,7 +13,7 @@ append scriptsHead
 //-       a.smallbutton(href="#") ⬇︎
 
 block nextMeetup
-  h1 Submit your talk for #{document.dateText || getDateForNextTalk().text}
+  h1 Submit your talk for #{document.dateText || formatDate(getDateForNextTalk())}<sup>th</sup>
 
 append article
   hr
