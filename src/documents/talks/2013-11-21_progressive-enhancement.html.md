@@ -1,4 +1,4 @@
-### JavaScript as the future of Progressive Enhancement
+## JavaScript as the future of Progressive Enhancement
 
 ##### [Tiago Rodrigues](http://twitter.com/trodrigues)
 

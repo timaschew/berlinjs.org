@@ -1,4 +1,4 @@
-### Solving the callback hell through generators and promises
+## Solving the callback hell through generators and promises
 
 ##### [Andreas Lubbe](http://berlinjs.org/archive.html)
 

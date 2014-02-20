@@ -1,4 +1,4 @@
-### JavaScript Method Modification - Aspect Oriented Function Composition
+## JavaScript Method Modification - Aspect Oriented Function Composition
 
 ##### [Peter Seliger](https://twitter.com/petsel)
 
