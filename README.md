@@ -14,6 +14,10 @@
 - [] GitHub push trigger 
 - [] XHR POST cross domain hack for /submit
 
+## Slides
+
+https://speakerdeck.com/timaschew/how-to-use-static-site-generators-as-cms
+
 ## Dev Setup
 
 Install docpad globally or run via `node_modules/.bin/docpad`
